@@ -32,9 +32,11 @@ namespace Foolproof
                        });
         }
 
-        public override bool IsValid(object value, object dependentValue, object container)
-        {
-            if (PassOnNull && (value == null || dependentValue == null) && (value != null || dependentValue != null))
+        public override bool IsValid(object value, object dependentValue, object container) {
+            var eitherAnyNull = PassOnNull && (value == null || dependentValue == null) && (value != null || dependentValue != null);
+            var eitherBothNull = PassOnNull && (value == null && dependentValue == null);
+
+            if (eitherAnyNull || eitherBothNull)
                 return true;
 
             return _metadata.IsValid(value, dependentValue);
